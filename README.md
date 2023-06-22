@@ -1,0 +1,2 @@
+# QazDev
+PracticeWork
