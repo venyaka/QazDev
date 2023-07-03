@@ -1,65 +1,79 @@
+/*
+Ильков Вениамин
+Принимает строку, сохраняет ее в БД как документ с помощью HTTP-запроса без использования библиотек, выполняет поиск строк в БД по заданной последовательности символов
+ */
+
 import java.sql.*;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-
-        CRUD.createTable();
-        System.out.println("Write your title:");
-        String title = in.nextLine();
-
-        if (title != null && ! title.equals("")) {
-            CRUD.addRecord(title);
-        }
-        in.close();
-    }
-}
-
-class CRUD {
     private static final String url = "jdbc:postgresql://localhost:5432/postgres";
     private static final String user = "postgres";
     private static final String password = "venyaka";
 
-    private static final String createTableSQL = "CREATE TABLE IF NOT EXISTS items (TITLE TEXT)";
-    private static final String INSERT_TITLE = "INSERT INTO items (title) VALUES (?);";
+    public static void main(String[] args) {
 
-    public static void createTable() {
+        try(Connection connection = DriverManager.getConnection(url, user, password)) {
+            createTable(connection);
+            System.out.println("Commands:\n\n[0] - add record\n[1] - search record\n\nclick any keys for exit");
+            Scanner in = new Scanner(System.in);
 
-        System.out.println(createTableSQL);
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(url, user, password);
+            int mode = in.nextInt();
+            if (mode == 0) {
+//                System.out.println("mode 0");
+                System.out.println("Write your record:");
+                String title = in.next();
 
-             // Step 2:Create a statement using connection object
-             Statement statement = connection.createStatement();) {
+//                    if (title != null && ! title.equals("")) {
+                addRecord(connection, title);
+                System.out.println("Done!");
+//                    }
+            }else if (mode == 1) {
+                System.out.println("mode 1");
 
-            // Step 3: Execute the query or update query
-            statement.execute(createTableSQL);
-            System.out.println("Table is created.");
-        } catch (SQLException e) {
+                System.out.println("\nWrite your search record:");
+                String title = in.next();
 
-            // print SQL exception information
+                System.out.println(searchRecord(connection, title));
+            } else {
+                System.out.println("exit");
+            }
+            in.close();
+
+        }catch (Exception e) {
             e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
         }
     }
 
-    public static void addRecord(String Title) {
-        System.out.println(INSERT_TITLE);
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(url, user, password);
-            // Step 2:Create a statement using connection object
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_TITLE)) {
-            preparedStatement.setString(1, Title);
-
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-
-            // print SQL exception information
-            e.printStackTrace();
-            System.err.println(e.getClass().getName()+": "+e.getMessage());
+    public static void createTable(Connection connection) throws SQLException {
+        String query = "CREATE TABLE IF NOT EXISTS items (TITLE TEXT)";
+        try (Statement statement = connection.createStatement();) {
+            statement.execute(query);
         }
+    }
+
+    public static void addRecord(Connection connection, String title) throws SQLException {
+        String query = "INSERT INTO items (title) VALUES (?);";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, title);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public static String searchRecord(Connection connection, String title) throws SQLException {
+//        String query = "INSERT INTO items (title) VALUES (?);";
+        String query = "SELECT * FROM items WHERE title LIKE ?";
+        if (title != null && ! title.equals("")) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, "%" + title + "%");
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        return resultSet.getString("title");
+                    }
+                }
+            }
+        }
+        return "Записи с такким текстом не найдены";
     }
 }
