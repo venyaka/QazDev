@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+  <title>add Salam</title>
+</head>
+<body>
+<h1 th:text="${addTitle}"/>
+<form action="/main/searchSalam" method="post">
+  <input type="text" name="salma">
+  <button type="submit">Search</button>
+</form>
+</body>
+</html>
