@@ -1,10 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://thymeleaf.org">
+  <link rel="stylesheet" href="css/style.css" />
 <head>
   <title th:text="${title}"/>
 </head>
 <body>
-  <a th:text="${addTitle}" href="/main/addSalam"/>
-  <a th:text="${searchTitle}" href="/main/searchSalam"/>
+  <div class="main-container">
+    <div class="main-container__links">
+      <a class="main-container__link" th:text="${addTitle}" href="/main/addSalam"/>
+      <a class="main-container__link" th:text="${searchTitle}" href="/main/searchSalam"/>
+    </div>
+  </div>
 </body>
 </html>

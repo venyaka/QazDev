@@ -20,6 +20,7 @@
         <property name="mainTitle" value="${main.title}"/>
         <property name="addTitle" value="${add.title}"/>
         <property name="searchTitle" value="${search.title}"/>
+        <property name="directoryPath" value="${directoryPath}"/>
     </bean>
 
     <bean id="Salams"

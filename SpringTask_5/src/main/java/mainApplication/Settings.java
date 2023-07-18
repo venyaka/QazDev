@@ -4,6 +4,15 @@ public class Settings {
     private String mainTitle;
     private String addTitle;
     private String searchTitle;
+    private String directoryPath;
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
+    }
 
     public Settings() {
         System.out.println("Settings bean is created ");

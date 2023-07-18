@@ -1,13 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://thymeleaf.org">
+  <link rel="stylesheet" href="css/style.css" />
 <head>
+  </body>
   <title>add Salam</title>
 </head>
 <body>
-<h1 th:text="${addTitle}"/>
-<form action="/main/searchSalam" method="post">
-  <input type="text" name="salma">
-  <button type="submit">Search</button>
+  <div class="main-container">
+    <div class="main-container__links">
+      <h1 th:text="${addTitle}"/>
+      <form action="/main/searchSalam" method="post">
+      <input type="text" name="salma">
+      <button type="submit">Search</button>
+    </div>
+  </div>
 </form>
-</body>
 </html>
