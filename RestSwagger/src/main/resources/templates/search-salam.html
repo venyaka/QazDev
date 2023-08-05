@@ -1,0 +1,18 @@
+  <!DOCTYPE HTML>
+<html xmlns:th="http://thymeleaf.org">
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+<head>
+  </body> 
+  <title>add Salam</title>
+</head>
+<body>
+  <div class="container">
+    <div class="search__links">
+      <h1 th:text="${searchTitle}"/>
+      <form action="/main/searchSalam" method="post">
+      <input class="search__input" type="text" name="salma">
+      <button type="submit">Search</button>
+    </div>
+  </div>
+</form>
+</html>
