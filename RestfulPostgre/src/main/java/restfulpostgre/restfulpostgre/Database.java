@@ -6,16 +6,17 @@ package restfulpostgre.restfulpostgre;
 //import javax.persistence.Entity;
 
 import jakarta.persistence.*;
+import java.util.Objects;
 
-@Entity
-@Table(name="rest_table")
+//@Table(name="rest_table")
+
+@Entity(name="salams")
 public class Database {
 
     @Id
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="salam")
-    private String salam;
+    public String salam;
 
     public Database() {
     }
